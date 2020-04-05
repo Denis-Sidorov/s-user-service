@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Users list
+{% endblock %}
+
+{% block body %}
+    <h1 class="mb-5">
+        Users list
+        <a href="{{ path('user_create') }}" class="ml-5"><button class="btn btn-info">Create User</button></a>
+    </h1>
+    <ul>
+        {% for user in users %}
+            <li>{{ user }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
