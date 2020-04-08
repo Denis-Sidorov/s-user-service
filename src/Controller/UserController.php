@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class UserController
@@ -27,16 +31,27 @@ class UserController extends AbstractController
      *     "/users/list",
      *     name="user_list"
      * )
+     * @param Filesystem $fs
+     * @param Finder $finder
+     * @param SerializerInterface $serializer
      * @return Response
      */
-    public function list()
+    public function list(Filesystem $fs, SerializerInterface $serializer)
     {
+        $userDBPath = $this->getParameter('kernel.project_dir') . '/var/users';
+        if (!$fs->exists($userDBPath)) {
+            return $this->render('user/list.html.twig', ['users' => []]);
+        }
+
+        $users = [];
+        $finder = new Finder();
+        $finder->files()->in($userDBPath)->sortByModifiedTime();
+        foreach ($finder as $file) {
+            $users[] = $serializer->deserialize($file->getContents(), User::class, 'json');
+        }
+
         return $this->render('user/list.html.twig', [
-            'users' => [
-                'Василий Пупки',
-                'John Doe',
-                'Геннадий Петрович'
-            ],
+            'users' => $users,
         ]);
     }
 
