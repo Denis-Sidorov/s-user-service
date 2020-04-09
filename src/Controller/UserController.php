@@ -32,7 +32,6 @@ class UserController extends AbstractController
      *     name="user_list"
      * )
      * @param Filesystem $fs
-     * @param Finder $finder
      * @param SerializerInterface $serializer
      * @return Response
      */

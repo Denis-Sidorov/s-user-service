@@ -38,4 +38,9 @@ class Gender
     {
         return $this->type;
     }
+
+    public function __toString()
+    {
+        return $this->type;
+    }
 }
