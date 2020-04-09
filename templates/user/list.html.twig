@@ -7,20 +7,23 @@
 {% block body %}
     <h1 class="mb-5">
         Users list
-        <a href="{{ path('user_create') }}" class="ml-5"><button class="btn btn-info">Create User</button></a>
+        <a href="{{ path('user_create') }}" class="float-right"><button class="btn btn-info">Create User</button></a>
     </h1>
-    <table>
+    <table class="table table-striped table-hover">
+        <caption>List of users</caption>
         <thead>
         <tr>
-            <td>Name</td>
-            <td>Birth Date</td>
-            <td>Gender</td>
-            <td>Address</td>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Birth Date</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Address</th>
         </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
+                <th scope="row">{{ loop.index }}</th>
                 <td>{{ user.name }}</td>
                 <td>{{ user.birthDate|date("d.m.Y") }}</td>
                 <td>{{ user.gender }}</td>
