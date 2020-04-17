@@ -30,5 +30,22 @@ const picker = datepicker('#birth_date_picker', {
     startDate: startDate
 });
 
+$(document).ready(function () {
+    let form = document.getElementById('create_user');
+    form.addEventListener(
+        'submit',
+        event => {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        },
+        false
+    );
 
+    $('#birth_date_picker').change(() => {
+        $('#birth_date').val($('#birth_date_picker').val());
+    });
+});
 },{"js-datepicker":1}]},{},[2]);

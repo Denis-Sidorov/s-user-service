@@ -16,31 +16,31 @@ class Gender
     const MALE = 'male';
     const FEMALE = 'female';
 
-    private string $type;
+    private string $name;
 
     /**
      * Gender constructor.
-     * @param string $type
+     * @param string $name
      */
-    function __construct(string $type)
+    function __construct(string $name)
     {
-        if (!in_array($type, [self::MALE, self::FEMALE], true)) {
+        if (!in_array($name, [self::MALE, self::FEMALE], true)) {
             throw new InvalidArgumentException('Invalid gender type');
         }
 
-        $this->type = $type;
+        $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function getType(): string
+    public function getName(): string
     {
-        return $this->type;
+        return $this->name;
     }
 
     public function __toString()
     {
-        return $this->type;
+        return $this->name;
     }
 }

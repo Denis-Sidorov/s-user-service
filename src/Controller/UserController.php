@@ -57,7 +57,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/create", name="user_create")
      */
-    public function createPage()
+    public function createUser()
     {
         return $this->render('user/create.html.twig');
     }

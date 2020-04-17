@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use DateTime;
+use InvalidArgumentException;
 
 /**
  * Class User
@@ -23,6 +24,10 @@ class User
      */
     public function __construct(string $name)
     {
+        if (empty($name)) {
+            throw new InvalidArgumentException("Empty name");
+        }
+
         $this->name = $name;
     }
 
