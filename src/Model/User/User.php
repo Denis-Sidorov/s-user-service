@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace App\Model\User;
 
-use DateTime;
+use App\Model\Storage\Model;
+use DateTimeImmutable;
 use InvalidArgumentException;
 
 /**
  * Class User
  * @package App\Model
  */
-class User
+class User extends Model
 {
     private string $name;
-    private ?DateTime $birthDate;
-    private ?string $address;
-    private ?Gender $gender;
+    private ?DateTimeImmutable $birthday = null;
+    private ?string $address = null;
+    private ?Gender $gender = null;
 
     /**
      * User constructor.
@@ -28,6 +29,7 @@ class User
             throw new InvalidArgumentException("Empty name");
         }
 
+        parent::__construct();
         $this->name = $name;
     }
 
@@ -50,20 +52,20 @@ class User
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTimeImmutable|null
      */
-    public function getBirthDate(): ?DateTime
+    public function getBirthday(): ?DateTimeImmutable
     {
-        return $this->birthDate;
+        return $this->birthday;
     }
 
     /**
-     * @param DateTime|null $birthDate
+     * @param DateTimeImmutable|null $birthday
      * @return User
      */
-    public function setBirthDate(?DateTime $birthDate): User
+    public function setBirthday(?DateTimeImmutable $birthday): User
     {
-        $this->birthDate = $birthDate;
+        $this->birthday = $birthday;
         return $this;
     }
 

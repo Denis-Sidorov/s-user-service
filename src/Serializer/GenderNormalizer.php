@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Serializer;
 
-use App\Model\Gender;
+use App\Model\User\Gender;
+use InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,7 +20,7 @@ class GenderNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         try {
             return new Gender($data);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new UnexpectedValueException("Unexpected value for gender", $e->getCode(), $e);
         }
     }

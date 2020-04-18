@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\User;
+use App\DataTransformer\UserTransformer;
+use App\Form\UserType;
+use App\Model\User\User;
+use App\Dto\UserDto;
+use App\Model\User\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -37,7 +42,7 @@ class UserController extends AbstractController
      */
     public function list(Filesystem $fs, SerializerInterface $serializer)
     {
-        $userDBPath = $this->getParameter('kernel.project_dir') . '/var/users';
+        $userDBPath = $this->getParameter('kernel.project_dir') . '/var/db/user';
         if (!$fs->exists($userDBPath)) {
             return $this->render('user/list.html.twig', ['users' => []]);
         }
@@ -57,9 +62,24 @@ class UserController extends AbstractController
     /**
      * @Route("/users/create", name="user_create")
      */
-    public function createUser()
+    public function createUser(Request $request, UserTransformer $transformer, UserRepository $userRepository)
     {
-        return $this->render('user/create.html.twig');
+        $userDto = new UserDto();
+        $form = $this->createForm(UserType::class, $userDto);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $transformer->fromDto($userDto);
+            $userRepository->save($user);
+
+            $this->addFlash('success', "User \"{$user->getName()}\" created");
+
+            return $this->redirectToRoute('user_list');
+        }
+
+        return $this->render('user/create.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
